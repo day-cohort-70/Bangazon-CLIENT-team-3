@@ -22,7 +22,7 @@ export default function Stores() {
       <div className="columns is-multiline">
       {
         stores.map(store => (
-          <StoreCard store={store} key={store.id} />
+          <StoreCard store={store} seller={store.seller} key={store.id} />
         ))
       }
       </div>
