@@ -20,7 +20,7 @@ export default function Register() {
 
   const submit = (e) => {
     e.preventDefault()
-    debugger
+   
     const user = {
       username,
       password,
