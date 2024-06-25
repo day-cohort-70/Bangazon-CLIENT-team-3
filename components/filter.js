@@ -73,7 +73,7 @@ export default function Filter({ productCount, onSearch, locations }) {
   }
 
   const filter = () => {
-    const selectedCategory = refEls.category.current.value
+    //const selectedCategory = refEls.category.current.value
     const newQuery = ""
     for (let refEl in refEls) {
       newQuery += buildQuery(refEl, refEls[refEl].current.value)
@@ -139,7 +139,7 @@ export default function Filter({ productCount, onSearch, locations }) {
                     refEl={refEls.category}
                     options={categories}
                     title="Filter by Category"
-                    addClass="is-fullwidth"
+                    addlClass="is-fullwidth"
                   />
                 </div>
                 <hr className="dropdown-divider"></hr>
@@ -147,7 +147,7 @@ export default function Filter({ productCount, onSearch, locations }) {
                   <Input
                     type="number"
                     placeholder="Minimum Price"
-                    addClass="is-horizontal"
+                    addlClass="is-horizontal"
                     refEl={refEls.min_price}
                   />
 
