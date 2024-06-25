@@ -15,7 +15,7 @@ export default function Filter({ productCount, onSearch, locations }) {
 
   const [showFilters, setShowFilters] = useState(false)
   const [query, setQuery] = useState('')
-  const [categories, setCategories] = useState([{id: 1, name: 'Apples'}, {id: 2, name: 'Oranges'}, {id: 3, name: 'Lemons'}])
+  const [categories, setCategories] = useState([])
   const [direction, setDirection] = useState('asc')
   const clear = () => {
     for (let ref in refEls) {
@@ -59,6 +59,12 @@ export default function Filter({ productCount, onSearch, locations }) {
     }
   }, [query])
 
+  useEffect(() => {
+    getCategories().then(fetchedCategories => {
+      setCategories(fetchedCategories)
+    })
+  }, [])
+
   const buildQuery = (key, value) => {
     if (value && value !== "0") {
       return `${key}=${value}&`
@@ -67,12 +73,15 @@ export default function Filter({ productCount, onSearch, locations }) {
   }
 
   const filter = () => {
+    const selectedCategory = refEls.category.current.value
     const newQuery = ""
     for (let refEl in refEls) {
       newQuery += buildQuery(refEl, refEls[refEl].current.value)
     }
     setQuery(newQuery)
   }
+
+  
 
   return (
     <div className='level'>
@@ -130,7 +139,7 @@ export default function Filter({ productCount, onSearch, locations }) {
                     refEl={refEls.category}
                     options={categories}
                     title="Filter by Category"
-                    addlClass="is-fullwidth"
+                    addClass="is-fullwidth"
                   />
                 </div>
                 <hr className="dropdown-divider"></hr>
@@ -138,7 +147,7 @@ export default function Filter({ productCount, onSearch, locations }) {
                   <Input
                     type="number"
                     placeholder="Minimum Price"
-                    addlClass="is-horizontal"
+                    addClass="is-horizontal"
                     refEl={refEls.min_price}
                   />
 
