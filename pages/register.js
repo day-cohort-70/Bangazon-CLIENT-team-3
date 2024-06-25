@@ -39,7 +39,7 @@ export default function Register() {
       }
     })
   }
-
+//Input vs. input? dig in here
   return (
     <div className="columns is-centered">
       <div className="column is-half">
