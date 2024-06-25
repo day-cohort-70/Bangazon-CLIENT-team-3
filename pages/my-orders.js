@@ -9,12 +9,40 @@ export default function Orders() {
   const [orders, setOrders] = useState([])
   const headers = ['Order Date', 'Total', 'Payment Method']
 
-  useEffect(() => {
-    getOrders().then(ordersData => {
-      if (ordersData) {
-        setOrders(ordersData)
+  const fetchPaymentTypes = async (url) => {
+    if (!url) return "No payment made"
+
+    const response = await fetch(`${url}`, {
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`
       }
     })
+    const paymentReply = await response.json()
+    return paymentReply?.merchant_name
+  }
+
+  const caculateTotal = (productArray) => {
+    const totalAmount = 0
+    productArray.map(item => (totalAmount += item.product.price))
+    return totalAmount
+  }
+
+  useEffect(() => {
+    const fetchOrdersAndPaymentTypes = async () => {
+      const ordersData = await getOrders()
+      if (ordersData) {
+        const ordersWithPaymentTypes = await Promise.all(
+          ordersData.map(async (order) => ({
+            ...order,
+            paymentType: await fetchPaymentTypes(order.payment_type),
+            total: caculateTotal(order.lineitems)
+          }))
+        )
+        setOrders(ordersWithPaymentTypes)
+      }
+    }
+
+    fetchOrdersAndPaymentTypes()
   }, [])
 
   return (
@@ -24,9 +52,9 @@ export default function Orders() {
           {
             orders.map((order) => (
               <tr key={order.id}>
-                <td>{order.completed_on}</td>
+                <td>{order.created_date}</td>
                 <td>${order.total}</td>
-                <td>{order.payment_type?.obscured_num}</td>
+                <td>{order.paymentType}</td>
               </tr>
             ))
           }
