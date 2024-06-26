@@ -4,21 +4,19 @@ import Layout from '../components/layout'
 import Navbar from '../components/navbar'
 import Table from '../components/table'
 import { getOrders } from '../data/orders'
+import { getSinglePaymentType } from '../data/payment-types'
 
 export default function Orders() {
   const [orders, setOrders] = useState([])
   const headers = ['Order Date', 'Total', 'Payment Method']
 
   const fetchPaymentTypes = async (url) => {
-    if (!url) return "No payment made"
-
-    const response = await fetch(`${url}`, {
-      headers: {
-        Authorization: `Token ${localStorage.getItem('token')}`
+      const response = await getSinglePaymentType(url);
+      if (response === "No payment made") {
+        return response;
       }
-    })
-    const paymentReply = await response.json()
-    return paymentReply?.merchant_name
+      const paymentData = await response.json();
+      return paymentData.merchant_name;
   }
 
   const caculateTotal = (productArray) => {
