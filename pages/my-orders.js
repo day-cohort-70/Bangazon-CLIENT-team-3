@@ -10,6 +10,23 @@ export default function Orders() {
   const [orders, setOrders] = useState([])
   const headers = ['Order Date', 'Total', 'Payment Method']
 
+  const fetchOrdersAndPaymentTypes = async () => {
+    const ordersData = await getOrders()
+    if (ordersData) {
+      const ordersWithPaymentTypes = await Promise.all(
+        ordersData.map(async (order) => ({
+          ...order,
+          paymentType: await fetchPaymentTypes(order.payment_type),
+          total: caculateTotal(order.lineitems)
+        }))
+      )
+      const validOrders = ordersWithPaymentTypes.filter(
+        order => order.paymentType !== "No payment made"
+      )
+      setOrders(validOrders)
+    }
+  }
+
   const fetchPaymentTypes = async (url) => {
       const response = await getSinglePaymentType(url);
       if (response === "No payment made") {
@@ -26,23 +43,6 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    const fetchOrdersAndPaymentTypes = async () => {
-      const ordersData = await getOrders()
-      if (ordersData) {
-        const ordersWithPaymentTypes = await Promise.all(
-          ordersData.map(async (order) => ({
-            ...order,
-            paymentType: await fetchPaymentTypes(order.payment_type),
-            total: caculateTotal(order.lineitems)
-          }))
-        )
-        const validOrders = ordersWithPaymentTypes.filter(
-          order => order.paymentType !== "No payment made"
-        )
-        setOrders(validOrders)
-      }
-    }
-
     fetchOrdersAndPaymentTypes()
   }, [])
 
