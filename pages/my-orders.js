@@ -36,7 +36,10 @@ export default function Orders() {
             total: caculateTotal(order.lineitems)
           }))
         )
-        setOrders(ordersWithPaymentTypes)
+        const validOrders = ordersWithPaymentTypes.filter(
+          order => order.paymentType !== "No payment made"
+        )
+        setOrders(validOrders)
       }
     }
 
