@@ -4,46 +4,17 @@ import Layout from '../components/layout'
 import Navbar from '../components/navbar'
 import Table from '../components/table'
 import { getOrders } from '../data/orders'
-import { getSinglePaymentType } from '../data/payment-types'
 
 export default function Orders() {
   const [orders, setOrders] = useState([])
   const headers = ['Order Date', 'Total', 'Payment Method']
 
-  const fetchOrdersAndPaymentTypes = async () => {
-    const ordersData = await getOrders()
-    if (ordersData) {
-      const ordersWithPaymentTypes = await Promise.all(
-        ordersData.map(async (order) => ({
-          ...order,
-          paymentType: await fetchPaymentTypes(order.payment_type),
-          total: caculateTotal(order.lineitems)
-        }))
-      )
-      const validOrders = ordersWithPaymentTypes.filter(
-        order => order.paymentType !== "No payment made"
-      )
-      setOrders(validOrders)
-    }
-  }
-
-  const fetchPaymentTypes = async (url) => {
-      const response = await getSinglePaymentType(url);
-      if (response === "No payment made") {
-        return response;
-      }
-      const paymentData = await response.json();
-      return paymentData.merchant_name;
-  }
-
-  const caculateTotal = (productArray) => {
-    const totalAmount = 0
-    productArray.map(item => (totalAmount += item.product.price))
-    return totalAmount
-  }
-
   useEffect(() => {
-    fetchOrdersAndPaymentTypes()
+    getOrders().then(ordersData => {
+      if (ordersData) {
+        setOrders(ordersData)
+      }
+    })
   }, [])
 
   return (
@@ -55,7 +26,7 @@ export default function Orders() {
               <tr key={order.id}>
                 <td>{order.created_date}</td>
                 <td>${order.total}</td>
-                <td>{order.paymentType}</td>
+                <td>{order.payment_type?.merchant_name}</td>
               </tr>
             ))
           }
