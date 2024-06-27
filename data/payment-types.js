@@ -27,15 +27,3 @@ export function deletePaymentType(id) {
     }
   })
 }
-
-export function getSinglePaymentType(url) {
-  if (!url) return "No payment made"
-  const response = fetch(`${url}`, {
-    headers: {
-      Authorization: `Token ${localStorage.getItem('token')}`
-    }
-  })
-  return response
-}
-
-//note that the fetch for payments use the fetch url instead of pk so fetchWithResponse does not work here.
