@@ -2,6 +2,9 @@ const API_URL = 'http://localhost:8000';
 
 const checkErrorJson = async (response) => {
   if (!response.ok) {
+    if (response.status === 401) {
+      window.location.href = "/login";
+    }
     const errorData = await response.json();
     throw new Error(errorData.message || 'Something went wrong');
   }
@@ -9,9 +12,8 @@ const checkErrorJson = async (response) => {
 };
 
 const handleError = (err) => {
-  if (err.status === 401) {
-    window.location.href = "/login";
-  } else if (err.status === 404) {
+ 
+if (err.status === 404) {
     console.error('Resource not found:', err.message);
   }
   throw err; // Re-throw the error for further handling
