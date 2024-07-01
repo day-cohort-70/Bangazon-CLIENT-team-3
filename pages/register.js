@@ -18,9 +18,9 @@ export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState('')
   const router = useRouter()
 
-  const submit = (e) => {
-    e.preventDefault()
-   
+  const submit = async (e) => {
+    e.preventDefault();
+  
     const user = {
       username,
       password,
@@ -29,16 +29,20 @@ export default function Register() {
       address,
       email,
       phone_number: phoneNumber,
-    }
-
-    register(user).then((res) => {
-     
+    };
+  
+    try {
+      const res = await register(user);
       if (res.token) {
-        setToken(res.token)
-        router.push('/')
+        setToken(res.token);
+        router.push('/');
       }
-    })
-  }
+    } catch (error) {
+     alert(error.message || 'Something went wrong');
+      }
+    }
+  ;
+  
 //Input vs. input? dig in here
   return (
     <div className="columns is-centered">

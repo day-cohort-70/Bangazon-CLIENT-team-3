@@ -9,19 +9,21 @@ const checkError = (res) => {
 
 const checkErrorJson = (res) => {
   if (!res.ok) {
-    throw Error(res.status);
-  } else {
-    return res.json()
+    return res.json().then(error => {
+      // Create and throw a custom error object
+      throw { status: res.status, message: error.message || res.statusText };
+    });
   }
-}
+  return res.json();
+};
 
 
 const catchError = (err) => {
-  if (err.message === '401') {
+  if (err.status === 401) {
     window.location.href = "/login"
   }
-  if (err.message === '404') {
-    throw Error(err.message);
+  if (err.status === 404 || err.status === 400) {
+    throw err
   }
 }
 
