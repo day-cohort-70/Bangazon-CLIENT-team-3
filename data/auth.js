@@ -10,14 +10,14 @@ export function login(user) {
   })
 }
 
-export function register(user) {
-  return fetchWithResponse('register', {
+export async function register(user) {
+  return await fetchWithResponse('register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(user)
-  })
+  });
 }
 
 export function getUserProfile() {
