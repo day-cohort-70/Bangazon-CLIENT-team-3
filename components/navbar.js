@@ -46,6 +46,7 @@ export default function Navbar() {
             () => {
               localStorage.removeItem('token')
               setIsLoggedIn(false)
+              window.location.href = "/login"
             }}
           >
             Log out
@@ -91,17 +92,15 @@ export default function Navbar() {
         </a>
       </div>
 
-      <div className="navbar-menu" ref={navbar}>
-        <div className="navbar-start">
-          <Link href="/products"><a className="navbar-item">Products</a></Link>
-          <Link href="/stores"><a className="navbar-item">Stores</a></Link>
-        </div>
+      
+        {isLoggedIn ? <div className="navbar-menu" ref={navbar}><div className="navbar-start"> <Link href="/products"><a className="navbar-item">Products</a></Link><Link href="/stores"><a className="navbar-item">Stores</a></Link></div></div> : <></> }
+        
         <div className="navbar-end">
           {
             isLoggedIn ? getLoggedInButtons() : getLoggedOutButtons()
           }
         </div>
-      </div>
+      
     </nav>
   )
 }
