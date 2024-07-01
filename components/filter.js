@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { getCategories, getProducts } from '../data/products'
+import { getCategories } from '../data/products'
 import { Input, Select } from './form-elements'
 
 export default function Filter({ productCount, onSearch, locations }) {
@@ -17,7 +17,7 @@ export default function Filter({ productCount, onSearch, locations }) {
   const [query, setQuery] = useState('')
   const [categories, setCategories] = useState([])
   const [direction, setDirection] = useState('asc')
-  const [products, setProducts] = useState([])
+  
   const clear = () => {
     for (let ref in refEls) {
       if (ref === 'direction') {
@@ -54,8 +54,6 @@ export default function Filter({ productCount, onSearch, locations }) {
     },
   ]
 
- 
-
   useEffect(() => {
     if (query) {
       onSearch(query)
@@ -76,23 +74,19 @@ export default function Filter({ productCount, onSearch, locations }) {
   }
 
   const filter = () => {
-    //const selectedCategory = refEls.category.current.value
     const newQuery = ""
     for (let refEl in refEls) {
-    //   newQuery += buildQuery(refEl, refEls[refEl].current.value)
-    // }
-    // setQuery(newQuery)
-    let key = refEl;
-    let value = refEls[refEl].current.value;
-
-    // Special case for mapping 'min_price' to 'price' to match backend expectations
-    if (refEl === 'min_price') {
-      key = 'price'; // Change 'min_price' to 'price' for the query parameter
-    }
-
-    newQuery += buildQuery(key, value); // Use the adjusted key
-  }
-  setQuery(newQuery);
+      let key = refEl; 
+      let value = refEls[refEl].current.value; 
+  
+     
+      if (refEl === 'min_price') {
+        key = 'price';  
+      }
+  
+      newQuery += buildQuery(key, value); 
+    } 
+    setQuery(newQuery);
   }
 
   
