@@ -17,6 +17,7 @@ export default function Filter({ productCount, onSearch, locations }) {
   const [query, setQuery] = useState('')
   const [categories, setCategories] = useState([])
   const [direction, setDirection] = useState('asc')
+  
   const clear = () => {
     for (let ref in refEls) {
       if (ref === 'direction') {
@@ -73,12 +74,19 @@ export default function Filter({ productCount, onSearch, locations }) {
   }
 
   const filter = () => {
-    //const selectedCategory = refEls.category.current.value
     const newQuery = ""
     for (let refEl in refEls) {
-      newQuery += buildQuery(refEl, refEls[refEl].current.value)
-    }
-    setQuery(newQuery)
+      let key = refEl; 
+      let value = refEls[refEl].current.value; 
+  
+     
+      if (refEl === 'min_price') {
+        key = 'price';  
+      }
+  
+      newQuery += buildQuery(key, value); 
+    } 
+    setQuery(newQuery);
   }
 
   
