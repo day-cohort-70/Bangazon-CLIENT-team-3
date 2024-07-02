@@ -4,7 +4,8 @@ import Layout from '../../../components/layout'
 import Navbar from '../../../components/navbar'
 import { Detail } from '../../../components/product/detail'
 import { Ratings } from '../../../components/rating/detail'
-import { getProductById, likeProduct, unLikeProduct } from '../../../data/products'
+import { getProductById } from '../../../data/products'
+import { likeProduct, unLikeProduct } from '../../../data/likes'
 
 export default function ProductDetail() {
   const router = useRouter()
