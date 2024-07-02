@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CardLayout from '../components/card-layout'
 import Layout from '../components/layout'
 import Navbar from '../components/navbar'
@@ -6,9 +6,11 @@ import { ProductCard } from '../components/product/card'
 import { StoreCard } from '../components/store/card'
 import { useAppContext } from '../context/state'
 import { getUserProfile } from '../data/auth'
+import { getLikedProducts } from '../data/likes'
 
 export default function Profile() {
   const { profile, setProfile } = useAppContext()
+  const [likedProducts, setLikedProducts] = useState([])
 
   useEffect(() => {
     getUserProfile().then((profileData) => {
@@ -16,7 +18,8 @@ export default function Profile() {
         setProfile(profileData)
       }
     })
-  }, [])
+    getLikedProducts().then(prodObjs => setLikedProducts(prodObjs))
+  }, [setProfile])
 
   return (
     <>
@@ -54,7 +57,7 @@ export default function Profile() {
       <CardLayout title="Products you've liked" width="is-full">
         <div className="columns is-multiline">
           {
-            profile.likes?.map(product => (
+            likedProducts?.map(product => (
               <ProductCard product={product} key={product.id} width="is-one-third" />
             ))
           }
