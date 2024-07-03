@@ -5,7 +5,7 @@ import Layout from '../components/layout'
 import Navbar from '../components/navbar'
 import CartDetail from '../components/order/detail'
 import CompleteFormModal from '../components/order/form-modal'
-import { completeCurrentOrder, getCart } from '../data/orders'
+import { completeCurrentOrder, getCart, updateProductQuantityInCart } from '../data/orders'
 import { getPaymentTypes } from '../data/payment-types'
 import { removeProductFromOrder } from '../data/products'
 
@@ -40,6 +40,20 @@ export default function Cart() {
     removeProductFromOrder(productId).then(refresh)
   }
 
+  const updateProductQuantity = (productId, newQuantity) => {
+    updateProductQuantityInCart(productId, newQuantity).then(() => {
+      setCart(prevCart => {
+        const updatedLineItems = prevCart.line_items.map(item => {
+          if (item.id === productId) {
+            return { ...item, cart_quantity: newQuantity }
+          }
+          return item
+        })
+        return { ...prevCart, line_items: updatedLineItems }
+      })
+    })
+  }
+
   return (
     <>
       <CompleteFormModal
@@ -49,7 +63,7 @@ export default function Cart() {
         completeOrder={completeOrder}
       />
       <CardLayout title="Your Current Order">
-        <CartDetail cart={cart} removeProduct={removeProduct} />
+        <CartDetail cart={cart} removeProduct={removeProduct} updateProductQuantity={updateProductQuantity}/>
         <>
           <a className="card-footer-item" onClick={() => setShowCompleteForm(true)}>Complete Order</a>
           <a className="card-footer-item">Delete Order</a>
