@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CardLayout from '../components/card-layout'
 import Layout from '../components/layout'
 import Navbar from '../components/navbar'
@@ -6,9 +6,11 @@ import { ProductCard } from '../components/product/card'
 import { StoreCard } from '../components/store/card'
 import { useAppContext } from '../context/state'
 import { getUserProfile } from '../data/auth'
+import { getLikedProducts } from '../data/likes'
 
 export default function Profile() {
   const { profile, setProfile } = useAppContext()
+  
 
   useEffect(() => {
     getUserProfile().then((profileData) => {
@@ -16,7 +18,8 @@ export default function Profile() {
         setProfile(profileData)
       }
     })
-  }, [])
+   
+  }, [setProfile])
 
   return (
     <>
