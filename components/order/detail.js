@@ -1,5 +1,4 @@
 import Table from "../table"
-import 'bulma/css/bulma.min.css'
 
 
 export default function CartDetail({ cart, updateProductQuantity }) {
