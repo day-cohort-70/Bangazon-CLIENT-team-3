@@ -1,7 +1,7 @@
 import Table from "../table"
 
 
-export default function CartDetail({ cart, updateProductQuantity }) {
+export default function CartDetail({ cart, updateProductQuantity, removeProduct }) {
   const headers = ['Product', 'Description', 'Price', 'Quantity', '']
   const footers = ['Total', '', cart.total, '', '']
 
@@ -33,7 +33,16 @@ export default function CartDetail({ cart, updateProductQuantity }) {
                   </button>
                 </div>
               </td>
-              <td></td>
+              <td>
+              <button 
+                  className="button is-small is-dark" 
+                  onClick={() => removeProduct(item.id)}
+                >
+                  <span className="icon">
+                    <i className="fas fa-trash"></i>
+                  </span>
+                </button>
+              </td>
             </tr>
           )
         })

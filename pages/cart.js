@@ -7,7 +7,7 @@ import CartDetail from '../components/order/detail'
 import CompleteFormModal from '../components/order/form-modal'
 import { completeCurrentOrder, getCart, updateProductQuantityInCart } from '../data/orders'
 import { getPaymentTypes } from '../data/payment-types'
-import { removeProductFromOrder } from '../data/products'
+import { removeProductFromOrder } from '../data/orders'
 
 export default function Cart() {
   const [cart, setCart] = useState({})
