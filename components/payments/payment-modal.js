@@ -8,11 +8,6 @@ export default function AddPaymentModal({ showModal, setShowModal, addNewPayment
   const [expirationDate, setExpirationDate] = useState('')
 
   const handleAddPayment = () => {
-    console.log({
-      account_number: accountNumber,
-      merchant_name: merchantName,
-      expiration_date: `${expirationDate}-01`
-    })
     addNewPayment({
       account_number: accountNumber,
       merchant_name: merchantName,
