@@ -1,16 +1,27 @@
-export function Input({ id, type="text", placeholder="", refEl=undefined, label=undefined, onChangeEvent, addlClass="", children }) {
+export function Input({ 
+  id, 
+  type = "text", 
+  placeholder = "", 
+  ref, 
+  label, 
+  onChange, 
+  value, 
+  className = "", 
+  children 
+}) {
   return (
-    <div className={`field ${addlClass}`}>
-      {label && <label className="label">{label}</label>}
+    <div className={`field ${className}`}>
+      {label && <label className="label" htmlFor={id}>{label}</label>}
       <div className="control">
         <input
           id={id}
           placeholder={placeholder}
           className="input"
           type={type}
-          ref={refEl}
-          onChange={onChangeEvent}
-        ></input>
+          ref={ref}
+          onChange={onChange}
+          value={value} 
+        />
       </div>
       {children}
     </div>
